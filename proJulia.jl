@@ -57,7 +57,7 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
         S = (pointCourant[1]+ 1,pointCourant[2])
         O = (pointCourant[1],pointCourant[2]-1)
         
-        if ( appartient(N, A) == true && A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && A[N[1],N[2]] != 'S' && matriceOriginelle[N[1],N[2]] == (-1,-1))
+        if ( appartient(N, A) == true && A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && matriceOriginelle[N[1],N[2]] == (-1,-1))
             enqueue!(q,N)
 
             matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
@@ -70,7 +70,7 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
 
         end
         
-        if ( appartient(E, A) == true && A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && A[E[1],E[2]] != 'S'  && matriceOriginelle[E[1],E[2]] == (-1,-1))
+        if ( appartient(E, A) == true && A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T'  && matriceOriginelle[E[1],E[2]] == (-1,-1))
             
             enqueue!(q,E)
 
@@ -85,7 +85,7 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
             
         end
         
-        if ( appartient(S, A) == true && A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && A[S[1],S[2]] != 'S'  && matriceOriginelle[S[1],S[2]] == (-1,-1))
+        if ( appartient(S, A) == true && A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && matriceOriginelle[S[1],S[2]] == (-1,-1))
             
             enqueue!(q,S)
 
@@ -100,7 +100,7 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
 
         end
         
-        if ( appartient(O, A) == true && A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && A[O[1],O[2]] != 'S'  && matriceOriginelle[O[1],O[2]] == (-1,-1))
+        if ( appartient(O, A) == true && A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T'  && matriceOriginelle[O[1],O[2]] == (-1,-1))
             
             enqueue!(q,O)
 
@@ -133,6 +133,8 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
     return matriceOriginelle, valeurChemin, listeFinale
 end
 
+
+
 function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
     m, n = size(A)
     
@@ -142,81 +144,104 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
     trouve::Bool = false
     listeFinale = Queue{Tuple{Int64,Int64}}()
     valeurChemin::Int64 = 0
-    
-    pQ = PriorityQueue()
-    enqueue!(pQ, (pointDepart[1],pointDepart[2]), 1) 
+
+    h = BinaryMinHeap{Tuple{Int64, Tuple{Int64, Int64}}}()
+    push!(h, (0,pointDepart)) 
+
     matriceOriginelle[pointDepart[1],pointDepart[2]] = (0,0)
 
-    while length(pQ)!= 0  
+    coutMvt::Int64 = 0
 
-        pointCourant = dequeue!(pQ) # remove and return the lowest priority key
+    while  (trouve == false)
 
-        N = (pointCourant[1]-1,pointCourant[2])
-        E = (pointCourant[1],pointCourant[2]+1)
-        S = (pointCourant[1]+ 1,pointCourant[2])
-        O = (pointCourant[1],pointCourant[2]-1)
-        
-        if ( appartient(N, A) == true )
-            
-            if (A[N[1],N[2]] != '@' || A[N[1],N[2]] != 'T' || A[N[1],N[2]] != 'S' || matriceOriginelle[N[1],N[2]] == (-1,-1))
-                enqueue!(pQ, N, 3)
-            else
-                enqueue!(pQ, N, 1) 
+        inutile, pointCourant = pop!(h) 
+        @show pointCourant
+
+        if (pointCourant == pointArrivee) 
+            trouve = true
+        else
+
+            N = (pointCourant[1]-1,pointCourant[2])
+            E = (pointCourant[1],pointCourant[2]+1)
+            S = (pointCourant[1]+ 1,pointCourant[2])
+            O = (pointCourant[1],pointCourant[2]-1)
+       
+            if ( appartient(N, A) == true )
+               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && matriceOriginelle[N[1],N[2]] == (-1,-1))
+                    if (A[N[1],N[2]] == 'S')
+                        coutMvt = 5
+                    elseif (A[N[1],N[2]] == 'W')
+                        coutMvt = 8
+                    else
+                        coutMvt = 1
+                    end
+                    matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[N[1],N[2]], N))
+                end
             end
-            
-            matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
-            matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
-
+         
+            if ( appartient(E, A) == true )
+                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && matriceOriginelle[E[1],E[2]] == (-1,-1))
+                    if (A[E[1],E[2]] == 'S')
+                        coutMvt = 5
+                    elseif ( A[E[1],E[2]] == 'W')
+                        coutMvt = 8
+                    else
+                        coutMvt = 1
+                    end
+                    println("E")
+                    matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[E[1],E[2]], E)) 
+                end
             end
-        end
         
-        if ( appartient(E, A) == true )
-
-            if ( A[E[1],E[2]] != '@' || A[E[1],E[2]] != 'T' || A[E[1],E[2]] != 'S'  || matriceOriginelle[E[1],E[2]] == (-1,-1))
-                enqueue!(pQ, E, 3)
-            else
-                enqueue!(pQ, E, 1) 
+            if ( appartient(S, A) == true )
+                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && matriceOriginelle[S[1],S[2]] == (-1,-1))
+                    if ( A[S[1],S[2]] == 'S' )
+                        coutMvt = 5
+                    elseif ( A[S[1],S[2]] == 'W')
+                        coutMvt = 8
+                    else
+                        coutMvt = 1
+                    end
+                    println("S")
+                    matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[S[1],S[2]], S))
+                end
             end
-
-            matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
-            matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
-
-        end
         
-        if ( appartient(S, A) == true )
+            if ( appartient(O, A) == true )
+                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && matriceOriginelle[O[1],O[2]] == (-1,-1))
+                    if (A[O[1],O[2]] == 'S')
+                        coutMvt = 5
+                    elseif ( A[S[1],S[2]] == 'W')
+                        coutMvt = 8
+                    else
+                        coutMvt = 1
+                    end
 
-            if ( A[S[1],S[2]] != '@' || A[S[1],S[2]] != 'T' || A[S[1],S[2]] != 'S'  || matriceOriginelle[S[1],S[2]] == (-1,-1))
-                enqueue!(pQ, S, 3) 
-            else
-                enqueue!(pQ, S, 1) 
+                    println("O")
+                    matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[O[1],O[2]], O))
+                end
             end
-
-            matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
-            matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
-
-        end
-        
-        if ( appartient(O, A) == true )
-
-            if ( A[O[1],O[2]] != '@' || A[O[1],O[2]] != 'T' || A[O[1],O[2]] != 'S'  || matriceOriginelle[O[1],O[2]] == (-1,-1))
-                enqueue!(pQ, O, 3) 
-            else 
-                enqueue!(pQ, O, 1) 
-            end
-
-            matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
-            matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
-        
         end
     end
-
- #=   pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    
+    @show matriceOriginelle
+    @show matriceNumerique
+#@assert false "stop"
+    pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
 
     if (trouve == true)
-        listeFinale  = enqueue!(listeFinale, (pA[1],pA[2]), 1)
+        listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
 
         while  pC != (0,0)
-            listeFinale  = enqueue!(listeFinale, pC,1)
+            listeFinale  = enqueue!(listeFinale, pC)
             pC = matriceOriginelle[pC[1],pC[2]]
         end
         valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
@@ -225,7 +250,10 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
         listeFinale = (0,0)
     end
     return matriceOriginelle, valeurChemin, listeFinale
-end=#
+    
+
+end
+
 
 
 # menu general--------------------------------------------------------
@@ -247,15 +275,19 @@ A = loadImg(path*fname)
 println("Instance : ",fname)
 
 
-depart::Tuple{Int64,Int64} = (1,1)
-arrivee::Tuple{Int64,Int64} = (7,5)
+depart::Tuple{Int64,Int64} = (5,13)
+arrivee::Tuple{Int64,Int64} = (10,14)
 
 A[depart[1],depart[2]] = 'D'
 A[arrivee[1],arrivee[2]] = 'A'
 
 
 R, zR, li = floodFill(A, depart, arrivee)
-RD, zRD, liD = dijkstra(A,depart,arrivee)
+RD, zRD, liD = dijkstra(A, depart, arrivee)
 
 @show zR
 @show li
+
+@show RD
+@show zRD
+@show liD
