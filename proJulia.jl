@@ -152,10 +152,9 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
 
     coutMvt::Int64 = 0
 
-    while  (trouve == false)
+    while  (trouve == false) 
 
         inutile, pointCourant = pop!(h) 
-        @show pointCourant
 
         if (pointCourant == pointArrivee) 
             trouve = true
@@ -190,7 +189,6 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
                     else
                         coutMvt = 1
                     end
-                    println("E")
                     matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
                     push!(h, (matriceNumerique[E[1],E[2]], E)) 
@@ -206,7 +204,6 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
                     else
                         coutMvt = 1
                     end
-                    println("S")
                     matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
                     push!(h, (matriceNumerique[S[1],S[2]], S))
@@ -222,8 +219,6 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
                     else
                         coutMvt = 1
                     end
-
-                    println("O")
                     matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
                     push!(h, (matriceNumerique[O[1],O[2]], O))
@@ -232,9 +227,6 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
         end
     end
     
-    @show matriceOriginelle
-    @show matriceNumerique
-#@assert false "stop"
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
 
     if (trouve == true)
