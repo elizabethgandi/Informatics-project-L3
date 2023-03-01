@@ -133,8 +133,6 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
     return matriceOriginelle, valeurChemin, listeFinale
 end
 
-
-
 function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
     m, n = size(A)
     
@@ -246,8 +244,12 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
 
 end
 
-
-
+function a*(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+    m, n = size(A)
+    
+    matriceOriginelle = fill((-1,-1), (m, n))
+    matriceNumerique  = zeros(Int, m, n)
+end
 # menu general--------------------------------------------------------
 
 # m lignes n colonnes
