@@ -118,6 +118,8 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
         end
     end
 
+    calculEtatsVisites(matriceNumerique)
+
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
     A[pC[1],pC[2]] = 'P'
 
@@ -231,6 +233,8 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
         end
     end
     
+    calculEtatsVisites(matriceNumerique)
+
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
     A[pC[1],pC[2]] = 'P'
 
@@ -248,6 +252,7 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
     else
         listeFinale = (0,0)
     end
+    @show listeFinale
     A[pointArrivee[1],pointArrivee[2]] = 'A'
     showMapChar(A,true)
     return matriceOriginelle, valeurChemin, listeFinale
@@ -287,9 +292,13 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
 
     coutMvt::Int64 = 0
 
+    cpt=0
     while  (trouve == false) 
 
         inutile, pointCourant = pop!(h) 
+
+        println("cpt:",cpt, " ", inutile, " ", pointCourant)
+        cpt+=1
 
         if (pointCourant == pointArrivee) 
             trouve = true
@@ -311,7 +320,7 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
                     end
                     matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[N[1],N[2]]+ calculHeuristique(pointDepart,pointArrivee), N))
+                    push!(h, (matriceNumerique[N[1],N[2]]+ calculHeuristique(N,pointArrivee), N))
                 end
             end
 
@@ -326,7 +335,7 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
                     end
                     matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[E[1],E[2]]+ calculHeuristique(pointDepart,pointArrivee), E)) 
+                    push!(h, (matriceNumerique[E[1],E[2]]+ calculHeuristique(E,pointArrivee), E)) 
                 end
             end
         
@@ -341,7 +350,7 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
                     end
                     matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[S[1],S[2]]+ calculHeuristique(pointDepart,pointArrivee), S))
+                    push!(h, (matriceNumerique[S[1],S[2]]+ calculHeuristique(S,pointArrivee), S))
                 end
             end
 
@@ -356,11 +365,14 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
                     end
                     matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
                     matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[O[1],O[2]]+ calculHeuristique(pointDepart,pointArrivee), O))
+                    push!(h, (matriceNumerique[O[1],O[2]]+ calculHeuristique(O,pointArrivee), O))
                 end
             end
         end
     end
+
+
+    calculEtatsVisites(matriceNumerique)
 
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
     A[pC[1],pC[2]] = 'P'
@@ -391,6 +403,7 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
               "Djikstra",
               "A*",
               "Tous"]
+
     menu = RadioMenu(options,pagesize=3)
     choice = request("Algorithme(s) choisit(s):", menu)
     algo = options[choice]
@@ -409,6 +422,7 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
         @show liD
 
     elseif (algo == "A*")
+        A = copy(ACopy)
         RA, zRA, liA = a(A, depart, arrivee)
         
         @show zRA
@@ -416,7 +430,9 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
 
     else
         R, zR, li = floodFill(A, pointDepart, pointArrivee)
+        A = copy(ACopy)
         RD, zRD, liD = dijkstra(A, pointDepart, pointArrivee)
+        A = copy(ACopy)
         RA, zRA, liA = a(A, depart, arrivee)
 
         @show zR
@@ -427,7 +443,22 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
 
         @show zRA
         @show liA
+    end
 
+end
+
+function calculEtatsVisites(MatNumerique::Matrix{Int64})
+    m, n = size(MatNumerique)
+    etatsVisites::Int64 = 0
+
+    for i in 1:m 
+        for j in 1:n
+            if (MatNumerique[i,j] != 0)
+                etatsVisites +=1
+            end
+        end
+    end
+    @show etatsVisites
 end
 
 # menu general--------------------------------------------------------
@@ -450,8 +481,8 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-depart::Tuple{Int64,Int64} = (5,6)
-arrivee::Tuple{Int64,Int64} = (8,7)
+depart::Tuple{Int64,Int64} = (8,8)
+arrivee::Tuple{Int64,Int64} = (12,9)
 
 A[depart[1],depart[2]] = 'D'
 A[arrivee[1],arrivee[2]] = 'A'
