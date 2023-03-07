@@ -384,6 +384,52 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
     return matriceOriginelle, valeurChemin, listeFinale
 end
 
+function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+    ACopy = copy(A)
+
+    options= ["FloodFill",
+              "Djikstra",
+              "A*",
+              "Tous"]
+    menu = RadioMenu(options,pagesize=3)
+    choice = request("Algorithme(s) choisit(s):", menu)
+    algo = options[choice]
+
+    if (algo == "FloodFill") 
+        R, zR, li = floodFill(A, pointDepart, pointArrivee)
+        
+        @show zR
+        @show li
+
+    elseif (algo == "Djikstra") 
+        A = copy(ACopy)
+        RD, zRD, liD = dijkstra(A, pointDepart, pointArrivee)
+        
+        @show zRD
+        @show liD
+
+    elseif (algo == "A*")
+        RA, zRA, liA = a(A, depart, arrivee)
+        
+        @show zRA
+        @show liA
+
+    else
+        R, zR, li = floodFill(A, pointDepart, pointArrivee)
+        RD, zRD, liD = dijkstra(A, pointDepart, pointArrivee)
+        RA, zRA, liA = a(A, depart, arrivee)
+
+        @show zR
+        @show li
+
+        @show zRD
+        @show liD
+
+        @show zRA
+        @show liA
+
+end
+
 # menu general--------------------------------------------------------
 
 # m lignes n colonnes
@@ -413,19 +459,4 @@ A[arrivee[1],arrivee[2]] = 'A'
 mapColor = true
 #showMapChar(A,mapColor)
 
-R, zR, li = floodFill(A, depart, arrivee)
-
-@show zR
-@show li
-
-A = copy(ACopy)
-RD, zRD, liD = dijkstra(A, depart, arrivee)
-
-@show zRD
-@show liD
-
-
-RA, zRA, liA = a(A, depart, arrivee)
-
-@show zRA
-@show liA
+afficheAlgorithmes(A, depart, arrivee)
