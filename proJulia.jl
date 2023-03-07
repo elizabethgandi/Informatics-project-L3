@@ -1,6 +1,8 @@
-#using Images
+using Printf, Crayons#, PyPlot
 using REPL.TerminalMenus
 using DataStructures
+
+include("plotRun.jl")
 
 function loadImg(fname)
 
@@ -117,19 +119,23 @@ function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrive
     end
 
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    A[pC[1],pC[2]] = 'P'
 
     if (trouve == true)
         listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
 
-        while  pC != (0,0)
+        while  pC != pointDepart
             listeFinale  = enqueue!(listeFinale, pC)
             pC = matriceOriginelle[pC[1],pC[2]]
+            A[pC[1],pC[2]] = 'P'
         end
+        A[pC[1],pC[2]] = 'D'
         valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
 
     else
         listeFinale = (0,0)
     end
+    showMapChar(A,true)
     return matriceOriginelle, valeurChemin, listeFinale
 end
 
@@ -226,30 +232,158 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
     end
     
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    A[pC[1],pC[2]] = 'P'
 
     if (trouve == true)
         listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
 
-        while  pC != (0,0)
+        while  pC != pointDepart
             listeFinale  = enqueue!(listeFinale, pC)
             pC = matriceOriginelle[pC[1],pC[2]]
+            A[pC[1],pC[2]] = 'P'
         end
+        A[pC[1],pC[2]] = 'D'
         valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
 
     else
         listeFinale = (0,0)
     end
+    A[pointArrivee[1],pointArrivee[2]] = 'A'
+    showMapChar(A,true)
     return matriceOriginelle, valeurChemin, listeFinale
     
 
 end
 
-function a*(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+
+function calculHeuristique(pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+    
+    xA = pointDepart[1]
+    yA = pointDepart[2]
+    xB = pointArrivee[1]
+    yB = pointArrivee[2]
+
+    heuristique = abs(xA-xB) + abs(yA-yB)
+
+    return heuristique
+end
+
+function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
     m, n = size(A)
     
     matriceOriginelle = fill((-1,-1), (m, n))
     matriceNumerique  = zeros(Int, m, n)
+
+    trouve::Bool = false
+    listeFinale = Queue{Tuple{Int64,Int64}}()
+    valeurChemin::Int64 = 0
+
+    heuristique = calculHeuristique(pointDepart,pointArrivee)
+
+    h = BinaryMinHeap{Tuple{Int64, Tuple{Int64, Int64}}}()
+    push!(h, (0+heuristique,pointDepart)) 
+    
+    matriceOriginelle[pointDepart[1],pointDepart[2]] = (0,0)
+
+    coutMvt::Int64 = 0
+
+    while  (trouve == false) 
+
+        inutile, pointCourant = pop!(h) 
+
+        if (pointCourant == pointArrivee) 
+            trouve = true
+        else
+
+            N = (pointCourant[1]-1,pointCourant[2])
+            E = (pointCourant[1],pointCourant[2]+1)
+            S = (pointCourant[1]+ 1,pointCourant[2])
+            O = (pointCourant[1],pointCourant[2]-1)
+       
+            if ( appartient(N, A) == true )
+               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && matriceOriginelle[N[1],N[2]] == (-1,-1))
+                    if (A[N[1],N[2]] == 'S')
+                        coutMvt = 5 
+                    elseif (A[N[1],N[2]] == 'W')
+                        coutMvt = 8 
+                    else
+                        coutMvt = 1 
+                    end
+                    matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[N[1],N[2]]+ calculHeuristique(pointDepart,pointArrivee), N))
+                end
+            end
+
+            if ( appartient(E, A) == true )
+                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && matriceOriginelle[E[1],E[2]] == (-1,-1))
+                    if (A[E[1],E[2]] == 'S')
+                        coutMvt = 5 
+                    elseif ( A[E[1],E[2]] == 'W')
+                        coutMvt = 8 
+                    else
+                        coutMvt = 1 
+                    end
+                    matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[E[1],E[2]]+ calculHeuristique(pointDepart,pointArrivee), E)) 
+                end
+            end
+        
+            if ( appartient(S, A) == true )
+                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && matriceOriginelle[S[1],S[2]] == (-1,-1))
+                    if ( A[S[1],S[2]] == 'S' )
+                        coutMvt = 5 
+                    elseif ( A[S[1],S[2]] == 'W')
+                        coutMvt = 8 
+                    else
+                        coutMvt = 1 
+                    end
+                    matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[S[1],S[2]]+ calculHeuristique(pointDepart,pointArrivee), S))
+                end
+            end
+
+            if ( appartient(O, A) == true )
+                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && matriceOriginelle[O[1],O[2]] == (-1,-1))
+                    if (A[O[1],O[2]] == 'S')
+                        coutMvt = 5 
+                    elseif ( A[S[1],S[2]] == 'W')
+                        coutMvt = 8 
+                    else
+                        coutMvt = 1 
+                    end
+                    matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
+                    matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
+                    push!(h, (matriceNumerique[O[1],O[2]]+ calculHeuristique(pointDepart,pointArrivee), O))
+                end
+            end
+        end
+    end
+
+    pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    A[pC[1],pC[2]] = 'P'
+
+    if (trouve == true)
+        listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
+
+        while  pC != pointDepart
+            listeFinale  = enqueue!(listeFinale, pC)
+            pC = matriceOriginelle[pC[1],pC[2]]
+            A[pC[1],pC[2]] = 'P'
+        end
+        A[pC[1],pC[2]] = 'D'
+        valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
+
+    else
+        listeFinale = (0,0)
+    end
+    A[pointArrivee[1],pointArrivee[2]] = 'A'
+    showMapChar(A,true)
+    return matriceOriginelle, valeurChemin, listeFinale
 end
+
 # menu general--------------------------------------------------------
 
 # m lignes n colonnes
@@ -268,20 +402,30 @@ println(" ")
 A = loadImg(path*fname)
 println("Instance : ",fname)
 
+ACopy = copy(A)
 
-depart::Tuple{Int64,Int64} = (5,13)
-arrivee::Tuple{Int64,Int64} = (10,14)
+depart::Tuple{Int64,Int64} = (5,6)
+arrivee::Tuple{Int64,Int64} = (8,7)
 
 A[depart[1],depart[2]] = 'D'
 A[arrivee[1],arrivee[2]] = 'A'
 
+mapColor = true
+#showMapChar(A,mapColor)
 
 R, zR, li = floodFill(A, depart, arrivee)
-RD, zRD, liD = dijkstra(A, depart, arrivee)
 
 @show zR
 @show li
 
-@show RD
+A = copy(ACopy)
+RD, zRD, liD = dijkstra(A, depart, arrivee)
+
 @show zRD
 @show liD
+
+
+RA, zRA, liA = a(A, depart, arrivee)
+
+@show zRA
+@show liA
