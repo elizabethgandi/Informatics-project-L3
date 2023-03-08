@@ -292,13 +292,13 @@ function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple
 
     coutMvt::Int64 = 0
 
-    cpt=0
+    #cpt=0
     while  (trouve == false) 
 
         inutile, pointCourant = pop!(h) 
 
-        println("cpt:",cpt, " ", inutile, " ", pointCourant)
-        cpt+=1
+        #println("cpt:",cpt, " ", inutile, " ", pointCourant)
+        #cpt+=1
 
         if (pointCourant == pointArrivee) 
             trouve = true
@@ -400,7 +400,7 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
     ACopy = copy(A)
 
     options= ["FloodFill",
-              "Djikstra",
+              "Dijkstra",
               "A*",
               "Tous"]
 
@@ -414,7 +414,7 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
         @show zR
         @show li
 
-    elseif (algo == "Djikstra") 
+    elseif (algo == "Dijkstra") 
         A = copy(ACopy)
         RD, zRD, liD = dijkstra(A, pointDepart, pointArrivee)
         
@@ -458,7 +458,7 @@ function calculEtatsVisites(MatNumerique::Matrix{Int64})
             end
         end
     end
-    @show etatsVisites
+    #@show etatsVisites
 end
 
 # menu general--------------------------------------------------------
@@ -481,8 +481,8 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-depart::Tuple{Int64,Int64} = (8,8)
-arrivee::Tuple{Int64,Int64} = (12,9)
+depart::Tuple{Int64,Int64} = (1,1)
+arrivee::Tuple{Int64,Int64} = (7,5)
 
 A[depart[1],depart[2]] = 'D'
 A[arrivee[1],arrivee[2]] = 'A'

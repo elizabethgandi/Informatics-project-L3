@@ -1,5 +1,5 @@
 #=
-function propagerDjikstra(A::Matrix{Char}, pointDirection::Tuple{Int64,Int64},matriceNumerique::Matrix{Int64},matriceOriginelle::Matrix{Tuple{Int64,Int64}},pointCourant::Tuple{Int64,Int64},coutMvt::Int64)
+function propagerDijkstra(A::Matrix{Char}, pointDirection::Tuple{Int64,Int64},matriceNumerique::Matrix{Int64},matriceOriginelle::Matrix{Tuple{Int64,Int64}},pointCourant::Tuple{Int64,Int64},coutMvt::Int64)
 
     @show pointCourant
     @show pointDirection
@@ -22,7 +22,7 @@ function propagerDjikstra(A::Matrix{Char}, pointDirection::Tuple{Int64,Int64},ma
 
 end
 
-function affichageResDjikstra(matriceNumerique::Matrix{Int64},matriceOriginelle::Matrix{Tuple{Int64,Int64}},
+function affichageResDijkstra(matriceNumerique::Matrix{Int64},matriceOriginelle::Matrix{Tuple{Int64,Int64}},
     pointArrivee::Tuple{Int64,Int64},trouve::Bool,listeFinale::Queue{Tuple{Int64,Int64}})
 
     pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
@@ -73,20 +73,20 @@ function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee
             O = (pointCourant[1]   ,pointCourant[2]-1)
        
             @show 'N'
-            propagerDjikstra(A,N,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
+            propagerDijkstra(A,N,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
 
             @show 'E'
-            propagerDjikstra(A,E,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
+            propagerDijkstra(A,E,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
 
             @show 'S'
-            propagerDjikstra(A,S,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
+            propagerDijkstra(A,S,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
             
             @show 'O'
-            propagerDjikstra(A,O,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
+            propagerDijkstra(A,O,matriceNumerique,matriceOriginelle,pointCourant,coutMvt)
             #@assert false "stop"
         end
     end
-    return  affichageResDjikstra(matriceNumerique,matriceOriginelle,pointArrivee,trouve,listeFinale)
+    return  affichageResDijkstra(matriceNumerique,matriceOriginelle,pointArrivee,trouve,listeFinale)
 end
 =#
 using REPL.TerminalMenus
