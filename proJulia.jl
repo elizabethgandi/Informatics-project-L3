@@ -26,7 +26,7 @@ function loadImg(fname)
     return A
 end
 
-function appartient(T::Tuple{Int64,Int64}, A::Matrix{Char})
+function belongTo(T::Tuple{Int64,Int64}, A::Matrix{Char})
     mL, nC = size(A)
     
     if (T[1] >=1 && T[1] <= mL && T[2]>=1 && T[2] <= nC) 
@@ -36,367 +36,367 @@ function appartient(T::Tuple{Int64,Int64}, A::Matrix{Char})
     end
 end
 
-function floodFill(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+function floodFill(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64,Int64})
     m, n = size(A)
     
-    matriceOriginelle = fill((-1,-1), (m, n))
-    matriceNumerique  = zeros(Int, m, n)
+    initialMatrix = fill((-1,-1), (m, n))
+    numberMatrix  = zeros(Int, m, n)
 
-    trouve::Bool = false
-    listeFinale = Queue{Tuple{Int64,Int64}}()
-    valeurChemin::Int64 = 0
+    findBool::Bool = false
+    finalList = Queue{Tuple{Int64,Int64}}()
+    pathValue::Int64 = 0
 
     q = Queue{Tuple{Int64,Int64}}()
-    enqueue!(q,pointDepart)
-    matriceOriginelle[pointDepart[1],pointDepart[2]] = (0,0)
+    enqueue!(q,startPoint)
+    initialMatrix[startPoint[1],startPoint[2]] = (0,0)
 
     while length(q)!= 0  
 
-        pointCourant = dequeue!(q)
+        currentPoint = dequeue!(q)
 
-        N = (pointCourant[1]-1,pointCourant[2])
-        E = (pointCourant[1],pointCourant[2]+1)
-        S = (pointCourant[1]+ 1,pointCourant[2])
-        O = (pointCourant[1],pointCourant[2]-1)
+        N = (currentPoint[1]-1,currentPoint[2])
+        E = (currentPoint[1],currentPoint[2]+1)
+        S = (currentPoint[1]+ 1,currentPoint[2])
+        O = (currentPoint[1],currentPoint[2]-1)
         
-        if ( appartient(N, A) == true && A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && matriceOriginelle[N[1],N[2]] == (-1,-1))
+        if ( belongTo(N, A) == true && A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && initialMatrix[N[1],N[2]] == (-1,-1))
             enqueue!(q,N)
 
-            matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
-            matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
+            initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
+            numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] +1
 
-            if (N == pointArrivee) 
+            if (N == finalPoint) 
                 empty!(q)
-                trouve = true
+                findBool = true
             end
 
         end
         
-        if ( appartient(E, A) == true && A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T'  && matriceOriginelle[E[1],E[2]] == (-1,-1))
+        if ( belongTo(E, A) == true && A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T'  && initialMatrix[E[1],E[2]] == (-1,-1))
             
             enqueue!(q,E)
 
-            matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
+            initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
 
-            if (E == pointArrivee) 
+            if (E == finalPoint) 
                 empty!(q)
-                trouve = true
+                findBool = true
             end
             
-            matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
+            numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] +1
             
         end
         
-        if ( appartient(S, A) == true && A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && matriceOriginelle[S[1],S[2]] == (-1,-1))
+        if ( belongTo(S, A) == true && A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && initialMatrix[S[1],S[2]] == (-1,-1))
             
             enqueue!(q,S)
 
-            matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
+            initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
 
-            if (S == pointArrivee) 
+            if (S == finalPoint) 
                 empty!(q)
-                trouve = true
+                findBool = true
             end
             
-            matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
+            numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] +1
 
         end
         
-        if ( appartient(O, A) == true && A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T'  && matriceOriginelle[O[1],O[2]] == (-1,-1))
+        if ( belongTo(O, A) == true && A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T'  && initialMatrix[O[1],O[2]] == (-1,-1))
             
             enqueue!(q,O)
 
-            matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
+            initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
 
-            if (O == pointArrivee) 
+            if (O == finalPoint) 
                 empty!(q)
-                trouve = true
+                findBool = true
             end
             
-            matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] +1
+            numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] +1
         
         end
     end
 
-    calculEtatsVisites(matriceNumerique)
+    calculVisitSates(numberMatrix)
 
-    pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    pC = initialMatrix[finalPoint[1],finalPoint[2]]
     A[pC[1],pC[2]] = 'P'
 
-    if (trouve == true)
-        listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
+    if (findBool == true)
+        finalList  = enqueue!(finalList, (finalPoint[1],finalPoint[2]))
 
-        while  pC != pointDepart
-            listeFinale  = enqueue!(listeFinale, pC)
-            pC = matriceOriginelle[pC[1],pC[2]]
+        while  pC != startPoint
+            finalList  = enqueue!(finalList, pC)
+            pC = initialMatrix[pC[1],pC[2]]
             A[pC[1],pC[2]] = 'P'
         end
         A[pC[1],pC[2]] = 'D'
-        valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
+        pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
 
     else
-        listeFinale = (0,0)
+        finalList = (0,0)
     end
     showMapChar(A,true)
-    return matriceOriginelle, valeurChemin, listeFinale
+    return initialMatrix, pathValue, finalList
 end
 
-function dijkstra(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+function dijkstra(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64,Int64})
     m, n = size(A)
     
-    matriceOriginelle = fill((-1,-1), (m, n))
-    matriceNumerique  = zeros(Int, m, n)
+    initialMatrix = fill((-1,-1), (m, n))
+    numberMatrix  = zeros(Int, m, n)
 
-    trouve::Bool = false
-    listeFinale = Queue{Tuple{Int64,Int64}}()
-    valeurChemin::Int64 = 0
+    findBool::Bool = false
+    finalList = Queue{Tuple{Int64,Int64}}()
+    pathValue::Int64 = 0
 
     h = BinaryMinHeap{Tuple{Int64, Tuple{Int64, Int64}}}()
-    push!(h, (0,pointDepart)) 
+    push!(h, (0,startPoint)) 
 
-    matriceOriginelle[pointDepart[1],pointDepart[2]] = (0,0)
+    initialMatrix[startPoint[1],startPoint[2]] = (0,0)
 
-    coutMvt::Int64 = 0
+    coutMovement::Int64 = 0
 
-    while  (trouve == false) 
+    while  (findBool == false) 
 
-        inutile, pointCourant = pop!(h) 
+        useless, currentPoint = pop!(h) 
 
-        if (pointCourant == pointArrivee) 
-            trouve = true
+        if (currentPoint == finalPoint) 
+            findBool = true
         else
 
-            N = (pointCourant[1]-1,pointCourant[2])
-            E = (pointCourant[1],pointCourant[2]+1)
-            S = (pointCourant[1]+ 1,pointCourant[2])
-            O = (pointCourant[1],pointCourant[2]-1)
+            N = (currentPoint[1]-1,currentPoint[2])
+            E = (currentPoint[1],currentPoint[2]+1)
+            S = (currentPoint[1]+ 1,currentPoint[2])
+            O = (currentPoint[1],currentPoint[2]-1)
        
-            if ( appartient(N, A) == true )
-               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && matriceOriginelle[N[1],N[2]] == (-1,-1))
+            if ( belongTo(N, A) == true )
+               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && initialMatrix[N[1],N[2]] == (-1,-1))
                     if (A[N[1],N[2]] == 'S')
-                        coutMvt = 5
+                        coutMovement = 5
                     elseif (A[N[1],N[2]] == 'W')
-                        coutMvt = 8
+                        coutMovement = 8
                     else
-                        coutMvt = 1
+                        coutMovement = 1
                     end
-                    matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[N[1],N[2]], N))
+                    initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[N[1],N[2]], N))
                 end
             end
          
-            if ( appartient(E, A) == true )
-                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && matriceOriginelle[E[1],E[2]] == (-1,-1))
+            if ( belongTo(E, A) == true )
+                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && initialMatrix[E[1],E[2]] == (-1,-1))
                     if (A[E[1],E[2]] == 'S')
-                        coutMvt = 5
+                        coutMovement = 5
                     elseif ( A[E[1],E[2]] == 'W')
-                        coutMvt = 8
+                        coutMovement = 8
                     else
-                        coutMvt = 1
+                        coutMovement = 1
                     end
-                    matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[E[1],E[2]], E)) 
+                    initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[E[1],E[2]], E)) 
                 end
             end
         
-            if ( appartient(S, A) == true )
-                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && matriceOriginelle[S[1],S[2]] == (-1,-1))
+            if ( belongTo(S, A) == true )
+                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && initialMatrix[S[1],S[2]] == (-1,-1))
                     if ( A[S[1],S[2]] == 'S' )
-                        coutMvt = 5
+                        coutMovement = 5
                     elseif ( A[S[1],S[2]] == 'W')
-                        coutMvt = 8
+                        coutMovement = 8
                     else
-                        coutMvt = 1
+                        coutMovement = 1
                     end
-                    matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[S[1],S[2]], S))
+                    initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[S[1],S[2]], S))
                 end
             end
         
-            if ( appartient(O, A) == true )
-                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && matriceOriginelle[O[1],O[2]] == (-1,-1))
+            if ( belongTo(O, A) == true )
+                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
                     if (A[O[1],O[2]] == 'S')
-                        coutMvt = 5
+                        coutMovement = 5
                     elseif ( A[S[1],S[2]] == 'W')
-                        coutMvt = 8
+                        coutMovement = 8
                     else
-                        coutMvt = 1
+                        coutMovement = 1
                     end
-                    matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[O[1],O[2]], O))
+                    initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[O[1],O[2]], O))
                 end
             end
         end
     end
     
-    calculEtatsVisites(matriceNumerique)
+    calculVisitSates(numberMatrix)
 
-    pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    pC = initialMatrix[finalPoint[1],finalPoint[2]]
     A[pC[1],pC[2]] = 'P'
 
-    if (trouve == true)
-        listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
+    if (findBool == true)
+        finalList  = enqueue!(finalList, (finalPoint[1],finalPoint[2]))
 
-        while  pC != pointDepart
-            listeFinale  = enqueue!(listeFinale, pC)
-            pC = matriceOriginelle[pC[1],pC[2]]
+        while  pC != startPoint
+            finalList  = enqueue!(finalList, pC)
+            pC = initialMatrix[pC[1],pC[2]]
             A[pC[1],pC[2]] = 'P'
         end
         A[pC[1],pC[2]] = 'D'
-        valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
+        pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
 
     else
-        listeFinale = (0,0)
+        finalList = (0,0)
     end
-    @show listeFinale
-    A[pointArrivee[1],pointArrivee[2]] = 'A'
+    @show finalList
+    A[finalPoint[1],finalPoint[2]] = 'A'
     showMapChar(A,true)
-    return matriceOriginelle, valeurChemin, listeFinale
+    return initialMatrix, pathValue, finalList
     
 
 end
 
 
-function calculHeuristique(pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+function calculheuristic(startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64,Int64})
     
-    xA = pointDepart[1]
-    yA = pointDepart[2]
-    xB = pointArrivee[1]
-    yB = pointArrivee[2]
+    xA = startPoint[1]
+    yA = startPoint[2]
+    xB = finalPoint[1]
+    yB = finalPoint[2]
 
-    heuristique = abs(xA-xB) + abs(yA-yB)
+    heuristic = abs(xA-xB) + abs(yA-yB)
 
-    return heuristique
+    return heuristic
 end
 
-function a(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64,Int64})
     m, n = size(A)
     
-    matriceOriginelle = fill((-1,-1), (m, n))
-    matriceNumerique  = zeros(Int, m, n)
+    initialMatrix = fill((-1,-1), (m, n))
+    numberMatrix  = zeros(Int, m, n)
 
-    trouve::Bool = false
-    listeFinale = Queue{Tuple{Int64,Int64}}()
-    valeurChemin::Int64 = 0
+    findBool::Bool = false
+    finalList = Queue{Tuple{Int64,Int64}}()
+    pathValue::Int64 = 0
 
-    heuristique = calculHeuristique(pointDepart,pointArrivee)
+    heuristic = calculheuristic(startPoint,finalPoint)
 
     h = BinaryMinHeap{Tuple{Int64, Tuple{Int64, Int64}}}()
-    push!(h, (0+heuristique,pointDepart)) 
+    push!(h, (0+heuristic,startPoint)) 
     
-    matriceOriginelle[pointDepart[1],pointDepart[2]] = (0,0)
+    initialMatrix[startPoint[1],startPoint[2]] = (0,0)
 
-    coutMvt::Int64 = 0
+    coutMovement::Int64 = 0
 
     #cpt=0
-    while  (trouve == false) 
+    while  (findBool == false) 
 
-        inutile, pointCourant = pop!(h) 
+        useless, currentPoint = pop!(h) 
 
-        #println("cpt:",cpt, " ", inutile, " ", pointCourant)
+        #println("cpt:",cpt, " ", useless, " ", currentPoint)
         #cpt+=1
 
-        if (pointCourant == pointArrivee) 
-            trouve = true
+        if (currentPoint == finalPoint) 
+            findBool = true
         else
 
-            N = (pointCourant[1]-1,pointCourant[2])
-            E = (pointCourant[1],pointCourant[2]+1)
-            S = (pointCourant[1]+ 1,pointCourant[2])
-            O = (pointCourant[1],pointCourant[2]-1)
+            N = (currentPoint[1]-1,currentPoint[2])
+            E = (currentPoint[1],currentPoint[2]+1)
+            S = (currentPoint[1]+ 1,currentPoint[2])
+            O = (currentPoint[1],currentPoint[2]-1)
        
-            if ( appartient(N, A) == true )
-               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && matriceOriginelle[N[1],N[2]] == (-1,-1))
+            if ( belongTo(N, A) == true )
+               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && initialMatrix[N[1],N[2]] == (-1,-1))
                     if (A[N[1],N[2]] == 'S')
-                        coutMvt = 5 
+                        coutMovement = 5 
                     elseif (A[N[1],N[2]] == 'W')
-                        coutMvt = 8 
+                        coutMovement = 8 
                     else
-                        coutMvt = 1 
+                        coutMovement = 1 
                     end
-                    matriceOriginelle[N[1],N[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[N[1],N[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[N[1],N[2]]+ calculHeuristique(N,pointArrivee), N))
+                    initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N))
                 end
             end
 
-            if ( appartient(E, A) == true )
-                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && matriceOriginelle[E[1],E[2]] == (-1,-1))
+            if ( belongTo(E, A) == true )
+                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && initialMatrix[E[1],E[2]] == (-1,-1))
                     if (A[E[1],E[2]] == 'S')
-                        coutMvt = 5 
+                        coutMovement = 5 
                     elseif ( A[E[1],E[2]] == 'W')
-                        coutMvt = 8 
+                        coutMovement = 8 
                     else
-                        coutMvt = 1 
+                        coutMovement = 1 
                     end
-                    matriceOriginelle[E[1],E[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[E[1],E[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[E[1],E[2]]+ calculHeuristique(E,pointArrivee), E)) 
+                    initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[E[1],E[2]]+ calculheuristic(E,finalPoint), E)) 
                 end
             end
         
-            if ( appartient(S, A) == true )
-                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && matriceOriginelle[S[1],S[2]] == (-1,-1))
+            if ( belongTo(S, A) == true )
+                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && initialMatrix[S[1],S[2]] == (-1,-1))
                     if ( A[S[1],S[2]] == 'S' )
-                        coutMvt = 5 
+                        coutMovement = 5 
                     elseif ( A[S[1],S[2]] == 'W')
-                        coutMvt = 8 
+                        coutMovement = 8 
                     else
-                        coutMvt = 1 
+                        coutMovement = 1 
                     end
-                    matriceOriginelle[S[1],S[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[S[1],S[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[S[1],S[2]]+ calculHeuristique(S,pointArrivee), S))
+                    initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[S[1],S[2]]+ calculheuristic(S,finalPoint), S))
                 end
             end
 
-            if ( appartient(O, A) == true )
-                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && matriceOriginelle[O[1],O[2]] == (-1,-1))
+            if ( belongTo(O, A) == true )
+                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
                     if (A[O[1],O[2]] == 'S')
-                        coutMvt = 5 
+                        coutMovement = 5 
                     elseif ( A[S[1],S[2]] == 'W')
-                        coutMvt = 8 
+                        coutMovement = 8 
                     else
-                        coutMvt = 1 
+                        coutMovement = 1 
                     end
-                    matriceOriginelle[O[1],O[2]] = (pointCourant[1],pointCourant[2])
-                    matriceNumerique[O[1],O[2]] = matriceNumerique[pointCourant[1],pointCourant[2]] + coutMvt
-                    push!(h, (matriceNumerique[O[1],O[2]]+ calculHeuristique(O,pointArrivee), O))
+                    initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
+                    numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                    push!(h, (numberMatrix[O[1],O[2]]+ calculheuristic(O,finalPoint), O))
                 end
             end
         end
     end
 
 
-    calculEtatsVisites(matriceNumerique)
+    calculVisitSates(numberMatrix)
 
-    pC = matriceOriginelle[pointArrivee[1],pointArrivee[2]]
+    pC = initialMatrix[finalPoint[1],finalPoint[2]]
     A[pC[1],pC[2]] = 'P'
 
-    if (trouve == true)
-        listeFinale  = enqueue!(listeFinale, (pointArrivee[1],pointArrivee[2]))
+    if (findBool == true)
+        finalList  = enqueue!(finalList, (finalPoint[1],finalPoint[2]))
 
-        while  pC != pointDepart
-            listeFinale  = enqueue!(listeFinale, pC)
-            pC = matriceOriginelle[pC[1],pC[2]]
+        while  pC != startPoint
+            finalList  = enqueue!(finalList, pC)
+            pC = initialMatrix[pC[1],pC[2]]
             A[pC[1],pC[2]] = 'P'
         end
         A[pC[1],pC[2]] = 'D'
-        valeurChemin = matriceNumerique[pointArrivee[1],pointArrivee[2]]
+        pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
 
     else
-        listeFinale = (0,0)
+        finalList = (0,0)
     end
-    A[pointArrivee[1],pointArrivee[2]] = 'A'
+    A[finalPoint[1],finalPoint[2]] = 'A'
     showMapChar(A,true)
-    return matriceOriginelle, valeurChemin, listeFinale
+    return initialMatrix, pathValue, finalList
 end
 
-function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, pointArrivee::Tuple{Int64,Int64})
+function printAlgorithms(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64,Int64})
     ACopy = copy(A)
 
     options= ["FloodFill",
@@ -409,31 +409,31 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
     algo = options[choice]
 
     if (algo == "FloodFill") 
-        R, zR, li = floodFill(A, pointDepart, pointArrivee)
+        R, zR, li = floodFill(A, startPoint, finalPoint)
         
         @show zR
         @show li
 
     elseif (algo == "Dijkstra") 
         A = copy(ACopy)
-        RD, zRD, liD = dijkstra(A, pointDepart, pointArrivee)
+        RD, zRD, liD = dijkstra(A, startPoint, finalPoint)
         
         @show zRD
         @show liD
 
     elseif (algo == "A*")
         A = copy(ACopy)
-        RA, zRA, liA = a(A, depart, arrivee)
+        RA, zRA, liA = a(A, start, final)
         
         @show zRA
         @show liA
 
     else
-        R, zR, li = floodFill(A, pointDepart, pointArrivee)
+        R, zR, li = floodFill(A, startPoint, finalPoint)
         A = copy(ACopy)
-        RD, zRD, liD = dijkstra(A, pointDepart, pointArrivee)
+        RD, zRD, liD = dijkstra(A, startPoint, finalPoint)
         A = copy(ACopy)
-        RA, zRA, liA = a(A, depart, arrivee)
+        RA, zRA, liA = a(A, start, final)
 
         @show zR
         @show li
@@ -447,18 +447,18 @@ function afficheAlgorithmes(A::Matrix{Char}, pointDepart::Tuple{Int64,Int64}, po
 
 end
 
-function calculEtatsVisites(MatNumerique::Matrix{Int64})
-    m, n = size(MatNumerique)
-    etatsVisites::Int64 = 0
+function calculVisitSates(matNumber::Matrix{Int64})
+    m, n = size(matNumber)
+    visitStates::Int64 = 0
 
     for i in 1:m 
         for j in 1:n
-            if (MatNumerique[i,j] != 0)
-                etatsVisites +=1
+            if (matNumber[i,j] != 0)
+                visitStates +=1
             end
         end
     end
-    #@show etatsVisites
+    #@show visitStates
 end
 
 # menu general--------------------------------------------------------
@@ -481,13 +481,13 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-depart::Tuple{Int64,Int64} = (1,1)
-arrivee::Tuple{Int64,Int64} = (7,5)
+start::Tuple{Int64,Int64} = (1,1)
+final::Tuple{Int64,Int64} = (15,14)
 
-A[depart[1],depart[2]] = 'D'
-A[arrivee[1],arrivee[2]] = 'A'
+A[start[1],start[2]] = 'D'
+A[final[1],final[2]] = 'A'
 
 mapColor = true
 #showMapChar(A,mapColor)
 
-afficheAlgorithmes(A, depart, arrivee)
+printAlgorithms(A, start, final)
