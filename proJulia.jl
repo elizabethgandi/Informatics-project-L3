@@ -124,7 +124,7 @@ function floodFill(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::
     A[pC[1],pC[2]] = 'P'
 
     if (findBool == true)
-        finalList  = enqueue!(finalList, (finalPoint[1],finalPoint[2]))
+        enqueue!(finalList, (finalPoint[1],finalPoint[2]))
 
         while  pC != startPoint
             finalList  = enqueue!(finalList, pC)
@@ -482,7 +482,7 @@ println("Instance : ",fname)
 ACopy = copy(A)
 
 start::Tuple{Int64,Int64} = (1,1)
-final::Tuple{Int64,Int64} = (15,14)
+final::Tuple{Int64,Int64} = (5,7)
 
 A[start[1],start[2]] = 'D'
 A[final[1],final[2]] = 'A'
