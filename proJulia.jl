@@ -22,7 +22,7 @@ function loadImg(fname)
         A[i,:] = collect(readline(f)) # :-> obtient tous les elements de la ligne i et collect-> itere chaque elements de la chaine de caracteres
     end
     
-    close(f)
+    close(f) 
     return A
 end
 
@@ -358,8 +358,8 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-start::Tuple{Int64,Int64} = (1,1)
-final::Tuple{Int64,Int64} = (5,7)
+start::Tuple{Int64,Int64} = (5,4)
+final::Tuple{Int64,Int64} = (10,7)
 
 A[start[1],start[2]] = 'D'
 A[final[1],final[2]] = 'A'
