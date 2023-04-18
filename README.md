@@ -1,6 +1,13 @@
 # Informatics-project-L3
+### Avant toute exécution
+Les packages utilisés sont
 
+- Crayons
+- DataStructures
 
+Pour lancer le programme il faut
+
+### Une fois le programme sous les yeux
 Les instances *arena.map* et *didactic.map* ont été choisies pour tester le programme. Par défaut, le point de départ est: **(5,4)** et le point d'arrivée est **(10,7)**.
 
 
