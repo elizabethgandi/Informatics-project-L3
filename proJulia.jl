@@ -476,7 +476,7 @@ fname = options[choice]
 
 println(" ")
 
-A = loadImg(path*fname)
+A = loadImg(path*fname) 
 println("Instance : ",fname)
 
 ACopy = copy(A)
