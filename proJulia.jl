@@ -383,7 +383,6 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
         end
     end
 
-    #CVS::Int64 = 0
     CVS = calculVisitSates(numberMatrix)
 
     pC = initialMatrix[finalPoint[1],finalPoint[2]]
@@ -410,6 +409,7 @@ end
 
 
 function printAlgorithms(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64,Int64}, w::Float64)
+
     ACopy = copy(A)
 
     options= ["Dijkstra",
@@ -423,49 +423,53 @@ function printAlgorithms(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalP
 
     if (algo == "Dijkstra") 
         A = copy(ACopy)
-        RD, zRD, liD, CVSd = dijkstra(A, startPoint, finalPoint)
+        RD, zRD, liD, nbEtatsVisitesDj = dijkstra(A, startPoint, finalPoint)
         
         @show zRD
         @show liD
-        @show CVSd
+        @show nbEtatsVisitesDj
 
     elseif (algo == "A*")
         A = copy(ACopy)
-        RA, zRA, liA, CVSa = a(A, start, final)
+        RA, zRA, liA, nbEtatsVisitesA = a(A, start, final)
         
         @show zRA
         @show liA
-        @show CVSa
+        @show nbEtatsVisitesA
 
     elseif (algo == "WA*")
         A = copy(ACopy)
-        RWA, zRWA, liWA, CVSwa = WAstar(A, start, final, w)
+        RWA, zRWA, liWA, nbEtatsVisitesWA = WAstar(A, start, final, w)
         
         @show zRWA
         @show liWA
-        @show CVSwa
+        @show nbEtatsVisitesWA
 
     else
-        RD, zRD, liD, CVSd = dijkstra(A, startPoint, finalPoint)
+        RD, zRD, liD, nbEtatsVisitesDj = dijkstra(A, startPoint, finalPoint)
         A = copy(ACopy)
-        RA, zRA, liA, CVSa = a(A, start, final)
-        RWA, zRWA, liWA, CVSwa = WAstar(A, start, final, w)
+        RA, zRA, liA, nbEtatsVisitesA = a(A, start, final)
+        RWA, zRWA, liWA, nbEtatsVisitesWA = WAstar(A, start, final, w)
 
-        println(" ")
-        @show zRD
-        #@show liD
-        @show CVSd
-        println(" ")
+        println("\nRésultats: ----------------------------------------------")
+        println("\nSolutions pour le point de départ: ", startPoint, " et le point d'arrivé: ", finalPoint)
 
-        @show zRA
-        #@show liA
-        @show CVSa
+        println("\nDistance D -> A: ", zRD)
+        #println("Liste des états visités par l'Algorithme Dijkstra = ", liD)
+        println("Nombre d'états visités par l'Algorithme Dijkstra = ", nbEtatsVisitesDj)
         println(" ")
 
-        @show zRWA
-       # @show liWA
-        @show CVSwa
+        println("\nDistance D -> A: ", zRA)
+        #println("Liste des états visités par l'Algorithme Dijkstra = ", liA)
+        println("Nombre d'états visités par l'Algorithme A* = ", nbEtatsVisitesA)
         println(" ")
+
+        println("\nDistance D -> A: ", zRWA)
+        #println("Liste des états visités par l'Algorithme Dijkstra = ", liWA)
+        println("Nombre d'états visités par l'Algorithme WA* = ", nbEtatsVisitesWA)
+
+        println("\nFin des résultats: ----------------------------------------------")
+
     end
 
 end
@@ -493,7 +497,6 @@ options = ["arena1.map",
            "didactic.map",
            "den009d.map",
            "den009d2.map",
-           "modifEli.map",
            "maze512-4-9.map"]
 
 menu   = RadioMenu(options, pagesize=2)
