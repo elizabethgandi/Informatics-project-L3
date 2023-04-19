@@ -1,9 +1,26 @@
 type octile
-height 5
-width 5
+height 22
+width 28
 map
-.....
-.....
-@WWW@
-.....
-.....
+@@@@@@@@@@TTTTTTTTT@@@@@@@@@
+@@@@@@@@@@TT......TTTT@@@@@@
+@@@@@@@@@@TT.......TTTTTT@T@
+@@TTTTTTTTTT.....TTTTTTTTTT@
+@@TT.............TTTTTTTTTT@
+@@TT.............TTT...TTTT@
+@@TT.WWWWWWWSSSWWWWWW....TT@
+@@TT.......WWSSSS........TT@
+@@TT.......WWSSWW........TT@
+T@TT.......WWSSWW........TT@
+@@TT.......WWSSWW........TTT
+T@TTT......WWWWWW........TTT
+@@TTT.....T.TTTT.........TTT
+@@TTT....TTTTTTT...........@
+@@TTT....TTTTTTT...........@
+@@TTT.....T@TTTT...........@
+@@TTT.....T@TTTT....TTTTTTT@
+@@TTT....TT@TTTT...TTTTTTTT@
+@@TTTTTTTTTTTTTTTTTTTTTTTTT@
+@@@@@@@TTTTTT@@@@@@@@@@@@@@@
+@@@@@@@@T@@@T@@@@@@@@@@@@@@@
+@@@@@@@@@@T@@@@@@@@@@@@@@@@@
