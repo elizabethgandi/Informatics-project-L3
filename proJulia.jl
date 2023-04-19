@@ -148,11 +148,9 @@ function dijkstra(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::T
     else
         finalList = (0,0)
     end
-    #@show finalList
     A[finalPoint[1],finalPoint[2]] = 'A'
     #showMapChar(A,true)
     return initialMatrix, pathValue, finalList, CVS
-    
 
 end
 
@@ -166,7 +164,6 @@ function calculheuristic(startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{Int64
 
     heuristic = abs(xA-xB) + abs(yA-yB)
 
-    #@show heuristic
     return heuristic
 end
 
@@ -214,7 +211,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N))
-                    #@show (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N)
+
                 end
             end
 
@@ -230,7 +227,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[E[1],E[2]]+ calculheuristic(E,finalPoint), E)) 
-                    #@show  ((numberMatrix[E[1],E[2]]+ calculheuristic(E,finalPoint), E))
+
                 end
             end
         
@@ -246,7 +243,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[S[1],S[2]]+ calculheuristic(S,finalPoint), S))
-                    #@show ((numberMatrix[S[1],S[2]]+ calculheuristic(S,finalPoint), S))
+
                 end
             end
 
@@ -262,11 +259,10 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[O[1],O[2]]+ calculheuristic(O,finalPoint), O))
-                    #@show (numberMatrix[O[1],O[2]]+ calculheuristic(O,finalPoint), O)
+
                 end
             end
         end
-        #@show h
     end
 
 
@@ -285,14 +281,13 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
         end
         A[pC[1],pC[2]] = 'D'
         pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
-        #@show pathValue
-        #@show finalList
+
     else
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
     #showMapChar(A,true)
-    #@show numberMatrix
+
     return initialMatrix, pathValue, finalList, CVS
 end
 
@@ -341,7 +336,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[N[1],N[2]]+ (w*calculheuristic(N,finalPoint)), N))
-                    #@show (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N)
+
                 end
             end
 
@@ -357,7 +352,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[E[1],E[2]]+ (w*calculheuristic(E,finalPoint)), E)) 
-                    #@show  ((numberMatrix[E[1],E[2]]+ calculheuristic(E,finalPoint), E))
+
                 end
             end
         
@@ -373,7 +368,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[S[1],S[2]]+ (w*calculheuristic(S,finalPoint)), S))
-                    #@show ((numberMatrix[S[1],S[2]]+ calculheuristic(S,finalPoint), S))
+
                 end
             end
 
@@ -389,11 +384,10 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[O[1],O[2]]+ (w*calculheuristic(O,finalPoint)), O))
-                    #@show (numberMatrix[O[1],O[2]]+ calculheuristic(O,finalPoint), O)
+
                 end
             end
         end
-        #@show h
     end
 
 
@@ -412,14 +406,11 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
         end
         A[pC[1],pC[2]] = 'D'
         pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
-        #@show pathValue
-        #@show finalList
     else
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
     #showMapChar(A,true)
-    #@show numberMatrix
     return initialMatrix, pathValue, finalList, CVS
 end
 
@@ -503,7 +494,6 @@ function calculVisitSates(matNumber::Matrix{Int64})
             end
         end
     end
-    #@show visitStates
     return visitStates
 end
 
@@ -528,20 +518,9 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-#erreur avec maze
 start::Tuple{Int64,Int64} = (471,26)
 final::Tuple{Int64,Int64} = (4,351)
 
-#resolu den009
-#start::Tuple{Int64,Int64} = (2,5)
-#final::Tuple{Int64,Int64} = (3,28)
-
-#resolu arena
-#start::Tuple{Int64,Int64} = (5,5)
-#final::Tuple{Int64,Int64} = (5,21)
-
-#start::Tuple{Int64,Int64} = (1,1)
-#final::Tuple{Int64,Int64} = (5,4)
 w::Float64 = 1.0
 
 A[start[1],start[2]] = 'D'
