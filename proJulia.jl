@@ -149,7 +149,7 @@ function dijkstra(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::T
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
-    #showMapChar(A,true)
+    showMapChar(A,true)
     return initialMatrix, pathValue, finalList, CVS
 
 end
@@ -286,7 +286,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
-    #showMapChar(A,true)
+    showMapChar(A,true)
 
     return initialMatrix, pathValue, finalList, CVS
 end
@@ -410,7 +410,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
-    #showMapChar(A,true)
+    showMapChar(A,true)
     return initialMatrix, pathValue, finalList, CVS
 end
 
@@ -504,7 +504,7 @@ path = "data/"
 options = ["arena.map",
            "didactic.map",
            "den009d.map",
-           "den009d2.map",
+           "test.map",
            "maze512-4-9.map"]
 
 menu   = RadioMenu(options, pagesize=2)
@@ -518,10 +518,13 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-start::Tuple{Int64,Int64} = (471,26)
-final::Tuple{Int64,Int64} = (4,351)
+start::Tuple{Int64,Int64} = (1,1)
+final::Tuple{Int64,Int64} = (5,5)
 
-w::Float64 = 1.0
+#start::Tuple{Int64,Int64} = (5,5)
+#final::Tuple{Int64,Int64} = (13,19)
+
+w::Float64 = 10.0
 
 A[start[1],start[2]] = 'D'
 A[final[1],final[2]] = 'A'
