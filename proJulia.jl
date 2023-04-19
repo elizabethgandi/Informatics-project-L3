@@ -29,7 +29,7 @@ end
 function belongTo(T::Tuple{Int64,Int64}, A::Matrix{Char})
     mL, nC = size(A)
     
-    if (T[1] >=1 && T[1] <= mL && T[2]>=1 && T[2] <= nC) 
+    if (T[1] >=1 && T[1] <= mL && T[1] <= nC && T[2]>=1 && T[2] <= nC && T[1] <= mL) 
         return true 
     else 
         return false
@@ -116,7 +116,7 @@ function dijkstra(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::T
                 if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
                     if (A[O[1],O[2]] == 'S')
                         coutMovement = 5
-                    elseif ( A[S[1],S[2]] == 'W')
+                    elseif ( A[O[1],O[2]] == 'W')
                         coutMovement = 8
                     else
                         coutMovement = 1
@@ -213,6 +213,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N))
+                    @show (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N)
                 end
             end
 
@@ -228,6 +229,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[E[1],E[2]]+ calculheuristic(E,finalPoint), E)) 
+                    @show  ((numberMatrix[E[1],E[2]]+ calculheuristic(E,finalPoint), E))
                 end
             end
         
@@ -243,6 +245,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[S[1],S[2]]+ calculheuristic(S,finalPoint), S))
+                    @show ((numberMatrix[S[1],S[2]]+ calculheuristic(S,finalPoint), S))
                 end
             end
 
@@ -250,7 +253,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                 if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
                     if (A[O[1],O[2]] == 'S')
                         coutMovement = 5 
-                    elseif ( A[S[1],S[2]] == 'W')
+                    elseif ( A[O[1],O[2]] == 'W')
                         coutMovement = 8 
                     else
                         coutMovement = 1 
@@ -258,9 +261,11 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
                     initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[O[1],O[2]]+ calculheuristic(O,finalPoint), O))
+                    @show (numberMatrix[O[1],O[2]]+ calculheuristic(O,finalPoint), O)
                 end
             end
         end
+        #@show h
     end
 
 
@@ -279,12 +284,14 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
         end
         A[pC[1],pC[2]] = 'D'
         pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
-
+        @show pathValue
+        @show finalList
     else
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
     showMapChar(A,true)
+    @show numberMatrix
     return initialMatrix, pathValue, finalList, CVS
 end
 
@@ -333,6 +340,8 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[N[1],N[2]]+ (w*calculheuristic(N,finalPoint)), N))
+                    @show (w*calculheuristic(N,finalPoint))
+                    @show (numberMatrix[N[1],N[2]]+ (w*calculheuristic(N,finalPoint)), N)
                 end
             end
 
@@ -348,6 +357,8 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[E[1],E[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[E[1],E[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[E[1],E[2]]+ (w*calculheuristic(E,finalPoint)), E)) 
+                    @show (w*calculheuristic(E,finalPoint))
+                    @show (numberMatrix[E[1],E[2]]+ (w*calculheuristic(E,finalPoint)), E)
                 end
             end
         
@@ -363,6 +374,8 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[S[1],S[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[S[1],S[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[S[1],S[2]]+ (w*calculheuristic(S,finalPoint)), S))
+                    @show (w*calculheuristic(S,finalPoint))
+                    @show (numberMatrix[S[1],S[2]]+ (w*calculheuristic(S,finalPoint)), S)
                 end
             end
 
@@ -370,7 +383,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                 if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
                     if (A[O[1],O[2]] == 'S')
                         coutMovement = 5 
-                    elseif ( A[S[1],S[2]] == 'W')
+                    elseif ( A[O[1],O[2]] == 'W')
                         coutMovement = 8 
                     else
                         coutMovement = 1 
@@ -378,9 +391,12 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
                     initialMatrix[O[1],O[2]] = (currentPoint[1],currentPoint[2])
                     numberMatrix[O[1],O[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
                     push!(h, (numberMatrix[O[1],O[2]]+ (w*calculheuristic(O,finalPoint)), O))
+                    @show (w*calculheuristic(O,finalPoint))
+                    @show (numberMatrix[O[1],O[2]]+ (w*calculheuristic(O,finalPoint)), O)
                 end
             end
         end
+       # @show h
     end
 
     CVS = calculVisitSates(numberMatrix)
@@ -398,12 +414,15 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
         end
         A[pC[1],pC[2]] = 'D'
         pathValue = numberMatrix[finalPoint[1],finalPoint[2]]
+        @show pathValue
+        @show finalList
 
     else
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
     showMapChar(A,true)
+    @show numberMatrix
     return initialMatrix, pathValue, finalList, CVS
 end
 
@@ -493,7 +512,7 @@ end
 
 path = "data/" 
 
-options = ["arena1.map",
+options = ["arena.map",
            "didactic.map",
            "den009d.map",
            "den009d2.map",
@@ -510,13 +529,21 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-#erreur
+#erreur avec maze
 #start::Tuple{Int64,Int64} = (471,26)
 #final::Tuple{Int64,Int64} = (4,351)
 
-start::Tuple{Int64,Int64} = (2,5)
-final::Tuple{Int64,Int64} = (3,28)
-w::Float64 = 10
+#pb avec den009
+#start::Tuple{Int64,Int64} = (2,5)
+#final::Tuple{Int64,Int64} = (3,28)
+
+#pb avec arena
+#start::Tuple{Int64,Int64} = (5,5)
+#final::Tuple{Int64,Int64} = (5,21)
+
+start::Tuple{Int64,Int64} = (1,1)
+final::Tuple{Int64,Int64} = (4,5)
+w::Float64 = 1.0
 
 A[start[1],start[2]] = 'D'
 A[final[1],final[2]] = 'A'

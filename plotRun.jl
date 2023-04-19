@@ -28,9 +28,9 @@ function showMapChar(mapchar::Matrix{Char}, crayonactivated::Bool)
         elseif  (mapchar[i,j]=='D')
           print(Crayon(background=:light_green,foreground=:black), mapchar[i,j])  # Departure 
         elseif  (mapchar[i,j]=='A')
-          print(Crayon(background=:light_red,foreground=:black), mapchar[i,j])    # Arrival 
+          print(Crayon(background=:light_green,foreground=:black), mapchar[i,j])    # Arrival 
         elseif  (mapchar[i,j]=='P')
-          print(Crayon(background=:light_yellow,foreground=:black), 'x')    # path                                               
+          print(Crayon(background=:light_red,foreground=:black), 'x')    # path                                               
         else
           print(Crayon(background=255,foreground=:black), mapchar[i,j])    # white
         end
