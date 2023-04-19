@@ -22,7 +22,7 @@ Instances numériques à choisir:
 
 Ici nous sélectionnons `didactic.map`.
 
-Dans un second temps, il faudra choisir l'algorithme qui est choisit pour être exécuté ou alors demander au programme d'exécuté tous les algorithmes 
+Dans un second temps, il faudra choisir l'algorithme qui est choisit pour être exécuté ou alors demander au programme d'exécuter tous les algorithmes 
 
 Algorithme(s) à choisir:
    
