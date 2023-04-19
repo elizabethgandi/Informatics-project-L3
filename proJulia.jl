@@ -200,7 +200,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
             O = (currentPoint[1],currentPoint[2]-1)
        
             if ( belongTo(N, A) == true )
-               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && initialMatrix[N[1],N[2]] == (-1,-1))
+               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T')
                     if (A[N[1],N[2]] == 'S')
                         coutMovement = 5 
                     elseif (A[N[1],N[2]] == 'W')
@@ -217,7 +217,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
             end
 
             if ( belongTo(E, A) == true )
-                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && initialMatrix[E[1],E[2]] == (-1,-1))
+                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T')
                     if (A[E[1],E[2]] == 'S')
                         coutMovement = 5 
                     elseif ( A[E[1],E[2]] == 'W')
@@ -234,7 +234,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
             end
         
             if ( belongTo(S, A) == true )
-                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && initialMatrix[S[1],S[2]] == (-1,-1))
+                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T')
                     if ( A[S[1],S[2]] == 'S' )
                         coutMovement = 5 
                     elseif ( A[S[1],S[2]] == 'W')
@@ -251,7 +251,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
             end
 
             if ( belongTo(O, A) == true )
-                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
+                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T')
                     if (A[O[1],O[2]] == 'S')
                         coutMovement = 5 
                     elseif ( A[O[1],O[2]] == 'W')
@@ -328,7 +328,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
             O = (currentPoint[1],currentPoint[2]-1)
        
             if ( belongTo(N, A) == true )
-               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && initialMatrix[N[1],N[2]] == (-1,-1))
+               if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T')
                     if (A[N[1],N[2]] == 'S')
                         coutMovement = 5 
                     elseif (A[N[1],N[2]] == 'W')
@@ -345,7 +345,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
             end
 
             if ( belongTo(E, A) == true )
-                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T' && initialMatrix[E[1],E[2]] == (-1,-1))
+                if ( A[E[1],E[2]] != '@' && A[E[1],E[2]] != 'T')
                     if (A[E[1],E[2]] == 'S')
                         coutMovement = 5 
                     elseif ( A[E[1],E[2]] == 'W')
@@ -362,7 +362,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
             end
         
             if ( belongTo(S, A) == true )
-                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T' && initialMatrix[S[1],S[2]] == (-1,-1))
+                if ( A[S[1],S[2]] != '@' && A[S[1],S[2]] != 'T')
                     if ( A[S[1],S[2]] == 'S' )
                         coutMovement = 5 
                     elseif ( A[S[1],S[2]] == 'W')
@@ -379,7 +379,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
             end
 
             if ( belongTo(O, A) == true )
-                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T' && initialMatrix[O[1],O[2]] == (-1,-1))
+                if ( A[O[1],O[2]] != '@' && A[O[1],O[2]] != 'T')
                     if (A[O[1],O[2]] == 'S')
                         coutMovement = 5 
                     elseif ( A[O[1],O[2]] == 'W')
@@ -528,10 +528,13 @@ ACopy = copy(A)
 #start::Tuple{Int64,Int64} = (464,2)
 #final::Tuple{Int64,Int64} = (139,509)
 
-start::Tuple{Int64,Int64} = (4,5)
-final::Tuple{Int64,Int64} = (13,19)
+start::Tuple{Int64,Int64} = (471,26)
+final::Tuple{Int64,Int64} = (4,351)
 
-w::Float64 = 7.0
+#start::Tuple{Int64,Int64} = (4,5)
+#final::Tuple{Int64,Int64} = (13,19)
+
+w::Float64 = 3.0
 
 A[start[1],start[2]] = 'D'
 A[final[1],final[2]] = 'A'
