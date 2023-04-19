@@ -8,9 +8,10 @@ Les packages utilisés sont
 Se placer dans `Informatics-project-L3`
 
 ### Comment lancer le programme?
-Les instances *arena.map* et *didactic.map* ont été choisies pour tester le programme. Par défaut, le point de départ est: **(5,4)** et le point d'arrivée est **(10,7)**.
+Par défaut, le point de départ est: **(471,26)** et le point d'arrivée est **(4,351)**, il faut ainsi sélectionner l'instance *maze512-4-9.map* pour éviter une ereur si on a pas changé les coordonnées.
 
 
+**Petit exemple de déroulement**
 Dans un premier temps il faudra sélectionner l'instance voulue
 
 Instances numériques à choisir:
