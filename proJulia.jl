@@ -149,7 +149,7 @@ function dijkstra(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::T
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
-    showMapChar(A,true)
+    #showMapChar(A,true)
     return initialMatrix, pathValue, finalList, CVS
 
 end
@@ -201,17 +201,20 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
        
             if ( belongTo(N, A) == true )
                if (A[N[1],N[2]] != '@' && A[N[1],N[2]] != 'T' && initialMatrix[N[1],N[2]] == (-1,-1))
-                    if (A[N[1],N[2]] == 'S')
-                        coutMovement = 5 
-                    elseif (A[N[1],N[2]] == 'W')
-                        coutMovement = 8 
-                    else
-                        coutMovement = 1 
-                    end
-                    initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
-                    numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
-                    push!(h, (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N))
+                    if (numberMatrix[N[1],N[2]] >= )
 
+                    else
+                        if (A[N[1],N[2]] == 'S')
+                            coutMovement = 5 
+                        elseif (A[N[1],N[2]] == 'W')
+                            coutMovement = 8 
+                        else
+                            coutMovement = 1 
+                        end
+                        initialMatrix[N[1],N[2]] = (currentPoint[1],currentPoint[2])
+                        numberMatrix[N[1],N[2]] = numberMatrix[currentPoint[1],currentPoint[2]] + coutMovement
+                        push!(h, (numberMatrix[N[1],N[2]]+ calculheuristic(N,finalPoint), N))
+                    end
                 end
             end
 
@@ -286,7 +289,7 @@ function a(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tuple{In
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
-    showMapChar(A,true)
+    #showMapChar(A,true)
 
     return initialMatrix, pathValue, finalList, CVS
 end
@@ -410,7 +413,7 @@ function WAstar(A::Matrix{Char}, startPoint::Tuple{Int64,Int64}, finalPoint::Tup
         finalList = (0,0)
     end
     A[finalPoint[1],finalPoint[2]] = 'A'
-    showMapChar(A,true)
+    #showMapChar(A,true)
     return initialMatrix, pathValue, finalList, CVS
 end
 
@@ -518,11 +521,11 @@ println("Instance : ",fname)
 
 ACopy = copy(A)
 
-start::Tuple{Int64,Int64} = (1,1)
-final::Tuple{Int64,Int64} = (5,5)
+#start::Tuple{Int64,Int64} = (471,26)
+#final::Tuple{Int64,Int64} = (4,351)
 
-#start::Tuple{Int64,Int64} = (5,5)
-#final::Tuple{Int64,Int64} = (13,19)
+start::Tuple{Int64,Int64} = (5,5)
+final::Tuple{Int64,Int64} = (13,19)
 
 w::Float64 = 10.0
 
