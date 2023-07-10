@@ -13,6 +13,7 @@ Se placer dans `Informatics-project-L3`
 
 ### Lancer le programme
 
+/data/photo/image.jpg "Titre de l'image"
 Par défaut, le point de départ est: **(471,26)** et le point d'arrivée est **(4,351)**
 
 ### Petit exemple de déroulement
