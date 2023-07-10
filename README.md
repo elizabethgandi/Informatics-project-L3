@@ -64,15 +64,11 @@ Fin des résultats: --------------------------------------
 ```
 ### Version
 
+```md
 Version 1.8.5 (2023-01-08)
-
 Official https://julialang.org/ release
-
+```
 ### Auteur
 
-Auteure du code: Elizabeth Gandibleux
-
-Supervisé par: Prof. Dr. Hab. Xavier GANDIBLEUX 
-
-
-(Ce sera répété dans le rapport)
+- **Superviseur**: Prof. Dr. Hab. Xavier GANDIBLEUX 
+- **Auteure du code**: Elizabeth Gandibleux
