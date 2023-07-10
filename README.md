@@ -21,12 +21,16 @@ Dans un premier temps il faudra sélectionner l'instance voulue
 
 Instances numériques à choisir:
 ```md 
-# >arena1.map
+# >arena.map
+# >arenaOriginal.map
+# >den009d.map
+# >den009dOriginal.map
 # >didactic.map
+# >maze512-4-9.map
 ```
 WAR inserer photo
 
-Ici nous sélectionnons `>didactic.map`.
+Ici nous sélectionnons `>maze512-4-9.map`.
 
 Dans un second temps, il faudra choisir l'algorithme qui est choisit pour être exécuté ou alors demander au programme d'exécuter tous les algorithmes 
 
